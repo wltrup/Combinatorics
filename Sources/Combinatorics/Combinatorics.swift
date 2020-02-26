@@ -4,14 +4,14 @@ import Foundation
 
 public enum Combinatorics {
     
-    // XXX Add to docs that this function is O(N) and the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func factorial(of n: Int) -> Int {
         if n < 0 { return 0 }
         if n == 0 { return 1 }
         return n * factorial(of: n-1)
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func choose(n: Int, k: Int) -> Int {
         guard n >= 1 && k >= 0 && k <= n else { return 0 }
         
@@ -48,7 +48,7 @@ public enum Combinatorics {
         return res
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func permutations<T>(of elements: ArraySlice<T>) -> [[T]] {
         var res: [[T]] = []
         elements.enumerated().forEach { k, entry in
@@ -65,12 +65,12 @@ public enum Combinatorics {
         return res
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func permutations<T>(of elements: Array<T>) -> [[T]] {
         return permutations(of: ArraySlice(elements))
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
         if k < 1 || k > elements.count { return [] }
         if k == elements.count { return [Array(elements)] }
@@ -88,12 +88,12 @@ public enum Combinatorics {
         return res
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func combinations<T>(of elements: Array<T>, k: Int) -> [[T]] {
         return combinations(of: ArraySlice(elements), k: k)
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func combinations<T>(of elements: ArraySlice<T>) -> [[T]] {
         guard elements.isEmpty == false else { return [] }
         return (1 ... elements.count)
@@ -101,7 +101,7 @@ public enum Combinatorics {
             .reduce([], +)
     }
     
-    // XXX Add to docs that the result is NOT cached.
+    /// The result of this function is NOT cached.
     public static func combinations<T>(of elements: Array<T>) -> [[T]] {
         return combinations(of: ArraySlice(elements))
     }
