@@ -81,21 +81,64 @@ public enum Combinatorics {
     }
     
     /// The result of this function is NOT cached.
-    public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
+    public static func combinations_old<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
         if k < 1 || k > elements.count { return [] }
         if k == elements.count { return [Array(elements)] }
-        
+
         guard let first = elements.first else { return [] }
         let head = [first]
-        
+
         let body = elements.dropFirst()
         guard body.isEmpty == false else { return [head] }
-        
-        let subcombos = combinations(of: body, k: k - 1)
+
+        let subcombos = combinations_old(of: body, k: k - 1)
         var res = (subcombos.isEmpty ? [head] : subcombos.map { head + $0 })
-        if body.count >= k { res += combinations(of: body, k: k) }
-        
+        if body.count >= k { res += combinations_old(of: body, k: k) }
+
         return res
+    }
+
+    public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
+
+        let n = elements.count
+        if k < 1 || k > n { return [] }
+        if k == n { return [Array(elements)] }
+
+        let resultCount = choose(n: n, k: k)
+
+        // Allocate all the space needed, upfront
+        let dummy = [T](repeating: elements[0], count: k)
+        var result = [[T]](repeating: dummy, count: resultCount)
+        var indices = [Int](0 ..< k)
+
+        func incrementIndex(at i: Int) {
+            // if index at i is equal to the max value it can have,
+            //      increment the index at the previous position (i-1),
+            //      then set the index at the current position (i) to
+            //      one more than the index at the previous position
+            // else
+            //      increment the index at the current position
+            if indices[i] == n - k + i && i > 0 {
+                incrementIndex(at: i-1)
+                indices[i] = indices[i-1] + 1
+            } else {
+                indices[i] += 1
+            }
+        }
+
+        func incrementIndices() {
+            incrementIndex(at: k-1)
+        }
+
+        for i in 0 ..< resultCount {
+            for j in 0 ..< k {
+                result[i][j] = elements[indices[j]]
+            }
+            incrementIndices()
+        }
+
+        return result
+
     }
     
     /// The result of this function is NOT cached.
