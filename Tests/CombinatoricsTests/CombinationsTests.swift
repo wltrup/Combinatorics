@@ -138,4 +138,36 @@ final class CombinationsTests: XCTestCase {
         XCTAssertTrue(res == exp)
     }
 
+    // a poor man's performance test
+    func test_performance() {
+        print("---")
+        for a in 0 ... 10 {
+            let n = 11 + 2 * a
+            let k = n/2 + 1
+            print("(n, k): (\(n), \(k))")
+
+            let ints = ArraySlice([Int](1 ... 21))
+
+            var start = Date()
+            _ = Combinatorics.combinations(of: ints, k: k)
+            var end = Date()
+            let newDelta = end.timeIntervalSince(start)
+            print("new: \(newDelta)")
+
+            start = Date()
+            _ = Combinatorics.combinations_old(of: ints, k: k)
+            end = Date()
+            let oldDelta = end.timeIntervalSince(start)
+            print("old: \(oldDelta)")
+
+            let x = Float(Int(10 * oldDelta / newDelta)) / 10
+            print("old is \(x) times slower than new")
+
+            let y = Int(100 * (oldDelta - newDelta) / newDelta)
+            print("old is \(y)% slower than new")
+
+            print("---")
+        }
+    }
+
 }
