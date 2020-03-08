@@ -79,7 +79,8 @@ public enum Combinatorics {
     public static func permutations<T>(of elements: Array<T>) -> [[T]] {
         return permutations(of: ArraySlice(elements))
     }
-    
+
+    /// The result of this function is NOT cached.
     public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
 
         let n = elements.count
