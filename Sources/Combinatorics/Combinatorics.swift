@@ -22,9 +22,16 @@ public enum Combinatorics {
         var nmks = Array(2 ... (n-k))
         var res = 1
         var tmp: [Int] = []
+
+        // This implementation avoids computing potentially large products,
+        // only to subsequently divide them by other potentially large products,
+        // by dividing the running product by the next denominator, if possible,
+        // and queueing it for a later division, if not.
         
         for num in Array(2 ... n) {
             res *= num
+            // divide the running product by the next (n-k) value, if possible,
+            // otherwise store that value for a later division
             tmp = []
             nmks.forEach { den in
                 if res % den == 0 {
@@ -34,6 +41,8 @@ public enum Combinatorics {
                 }
             }
             nmks = tmp
+            // divide the running product by the next k value, if possible,
+            // otherwise store that value for a later division
             tmp = []
             ks.forEach { den in
                 if res % den == 0 {
