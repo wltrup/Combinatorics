@@ -1,6 +1,6 @@
 import Foundation
 
-// XXX Add background-executing versions, with callbacks returning Result or OperationResult ??
+// Todo: Add background-executing versions, with callbacks returning Result or OperationResult ??
 
 public enum Combinatorics {
     
@@ -56,7 +56,8 @@ public enum Combinatorics {
         
         return res
     }
-    
+
+    // Todo: a more performant implementation.
     /// The result of this function is NOT cached.
     public static func permutations<T>(of elements: ArraySlice<T>) -> [[T]] {
         var res: [[T]] = []
@@ -73,7 +74,7 @@ public enum Combinatorics {
         }
         return res
     }
-    
+
     /// The result of this function is NOT cached.
     public static func permutations<T>(of elements: Array<T>) -> [[T]] {
         return permutations(of: ArraySlice(elements))
