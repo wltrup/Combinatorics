@@ -16,10 +16,10 @@ public enum Combinatorics {
         guard n >= 1 && k >= 0 && k <= n else { return 0 }
         
         if k == 0 || k == n { return 1 }
-        if k == 1 { return n }
+        if k == 1 || k == n-1 { return n }
         
         var ks = Array(2 ... k)
-        var nmks = Array(1 ... (n-k))
+        var nmks = Array(2 ... (n-k))
         var res = 1
         var tmp: [Int] = []
         
