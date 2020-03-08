@@ -80,24 +80,6 @@ public enum Combinatorics {
         return permutations(of: ArraySlice(elements))
     }
     
-    /// The result of this function is NOT cached.
-    public static func combinations_old<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
-        if k < 1 || k > elements.count { return [] }
-        if k == elements.count { return [Array(elements)] }
-
-        guard let first = elements.first else { return [] }
-        let head = [first]
-
-        let body = elements.dropFirst()
-        guard body.isEmpty == false else { return [head] }
-
-        let subcombos = combinations_old(of: body, k: k - 1)
-        var res = (subcombos.isEmpty ? [head] : subcombos.map { head + $0 })
-        if body.count >= k { res += combinations_old(of: body, k: k) }
-
-        return res
-    }
-
     public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] {
 
         let n = elements.count
