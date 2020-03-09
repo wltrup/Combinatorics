@@ -4,7 +4,7 @@ import Foundation
 
 extension Combinatorics {
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -47,7 +47,7 @@ extension Combinatorics {
 
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -59,7 +59,7 @@ extension Combinatorics {
         combinations(of: ArraySlice(elements), k: k)
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -74,7 +74,7 @@ extension Combinatorics {
             .reduce([], +)
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -94,7 +94,7 @@ extension Combinatorics {
 
     public typealias CombinationsCompletionHandler<T> = ([[T]]) -> Void
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -120,7 +120,7 @@ extension Combinatorics {
         }
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -147,7 +147,7 @@ extension Combinatorics {
         )
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
@@ -172,7 +172,7 @@ extension Combinatorics {
         }
     }
 
-    /// Computes all combinations of the input elements, taking `k` at a time. The
+    /// Computes all *combinations* of the input elements, taking `k` at a time. The
     /// result is, therefore, an array of length-`k` arrays. The implementation aims
     /// to be as efficient as possible by allocating upfront all the storage it needs.
     ///
