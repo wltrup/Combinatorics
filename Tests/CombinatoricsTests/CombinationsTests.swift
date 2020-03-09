@@ -46,16 +46,16 @@ final class CombinationsTests: XCTestCase {
 
     func test_individualCombos() {
         for k in (0 ..< ints.count) {
-            let a1 = expectedCombos[k]
-            let a2 = Combinatorics.combinations(of: ints, k: k+1)
-            XCTAssertTrue(a1 == a2)
+            let exp = expectedCombos[k]
+            let res = Combinatorics.combinations(of: ints, k: k+1)
+            XCTAssertTrue(res == exp)
         }
     }
 
     func test_allCombos() {
-        let a1 = Array(expectedCombos.joined())
-        let a2 = Combinatorics.combinations(of: ints)
-        XCTAssertTrue(a1 == a2)
+        let exp = Array(expectedCombos.joined())
+        let res = Combinatorics.combinations(of: ints)
+        XCTAssertTrue(res == exp)
     }
 
     func test_empty() {
@@ -120,22 +120,145 @@ final class CombinationsTests: XCTestCase {
         XCTAssertTrue(res == exp)
     }
 
-    func test_choose1() {
-        for n in (1 ... 20) {
-            for k in (0 ... n) {
-                let exp = Combinatorics.factorial(of: n) / (
-                    Combinatorics.factorial(of: n-k) * Combinatorics.factorial(of: k)
-                )
-                let res = Combinatorics.choose(n: n, k: k)
+    func test_individualCombos_async() {
+        for k in (0 ..< ints.count) {
+            let exp = expectedCombos[k]
+            Combinatorics.combinations(
+                of: ints,
+                k: k+1,
+                executionQueue: DispatchQueue.global(qos: .background),
+                receiverQueue: DispatchQueue.main
+            ) { res in
+                XCTAssertTrue(Thread.isMainThread)
                 XCTAssertTrue(res == exp)
             }
         }
     }
 
-    func test_choose2() {
-        let exp = 2_118_760
-        let res = Combinatorics.choose(n: 50, k: 5)
-        XCTAssertTrue(res == exp)
+    func test_allCombos_async() {
+        let exp = Array(expectedCombos.joined())
+        Combinatorics.combinations(
+            of: ints,
+            executionQueue: DispatchQueue.global(qos: .background),
+            receiverQueue: DispatchQueue.main
+        ) { res in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertTrue(res == exp)
+        }
+    }
+
+    func test_empty_async() {
+        let ints: [Int] = []
+        let exp: [[Int]] = []
+        for k in (0 ... ints.count + 1) {
+            Combinatorics.combinations(
+                of: ints,
+                k: k,
+                executionQueue: DispatchQueue.global(qos: .background),
+                receiverQueue: DispatchQueue.main
+            ) { res in
+                XCTAssertTrue(Thread.isMainThread)
+                XCTAssertTrue(res == exp)
+            }
+        }
+        Combinatorics.combinations(
+            of: ints,
+            executionQueue: DispatchQueue.global(qos: .background),
+            receiverQueue: DispatchQueue.main
+        ) { res in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertTrue(res == exp)
+        }
+    }
+
+    func test_single_async() {
+        let ints = [1]
+        for k in (0 ... ints.count + 1) {
+            let exp: [[Int]]
+            switch k {
+            case 1: exp = [[1]]
+            default: exp = []
+            }
+            Combinatorics.combinations(
+                of: ints,
+                k: k,
+                executionQueue: DispatchQueue.global(qos: .background),
+                receiverQueue: DispatchQueue.main
+            ) { res in
+                XCTAssertTrue(Thread.isMainThread)
+                XCTAssertTrue(res == exp)
+            }
+        }
+        let exp = [[1]]
+        Combinatorics.combinations(
+            of: ints,
+            executionQueue: DispatchQueue.global(qos: .background),
+            receiverQueue: DispatchQueue.main
+        ) { res in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertTrue(res == exp)
+        }
+    }
+
+    func test_pair_async() {
+        let ints = [1,2]
+        for k in (0 ... ints.count + 1) {
+            let exp: [[Int]]
+            switch k {
+            case 1: exp = [[1], [2]]
+            case 2: exp = [[1,2]]
+            default: exp = []
+            }
+            Combinatorics.combinations(
+                of: ints,
+                k: k,
+                executionQueue: DispatchQueue.global(qos: .background),
+                receiverQueue: DispatchQueue.main
+            ) { res in
+                XCTAssertTrue(Thread.isMainThread)
+                XCTAssertTrue(res == exp)
+            }
+        }
+        let exp = [ [1], [2], [1,2] ]
+        Combinatorics.combinations(
+            of: ints,
+            executionQueue: DispatchQueue.global(qos: .background),
+            receiverQueue: DispatchQueue.main
+        ) { res in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertTrue(res == exp)
+        }
+    }
+
+    func test_triple_async() {
+        let ints = [1,2,3]
+        for k in (0 ... ints.count + 1) {
+            let exp: [[Int]]
+            switch k {
+            case 1: exp = [[1], [2], [3]]
+            case 2: exp = [[1,2], [1,3], [2,3]]
+            case 3: exp = [[1,2,3]]
+            default: exp = []
+            }
+            Combinatorics.combinations(
+                of: ints,
+                k: k,
+                executionQueue: DispatchQueue.global(qos: .background),
+                receiverQueue: DispatchQueue.main
+            ) { res in
+                XCTAssertTrue(Thread.isMainThread)
+                XCTAssertTrue(res == exp)
+            }
+        }
+        let exp = [ [1], [2], [3], [1,2], [1,3], [2,3], [1,2,3] ]
+        Combinatorics.combinations(
+            of: ints,
+            executionQueue: DispatchQueue.global(qos: .background),
+            receiverQueue: DispatchQueue.main
+        ) { res in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertTrue(res == exp)
+        }
     }
 
 }
