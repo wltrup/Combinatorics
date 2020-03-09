@@ -7,14 +7,20 @@
 
 ## What
 
-**Combinatorics** is a Swift Package Manager package for iOS/tvOS (10.0 and above), watchOS (4.0 and above), and macOS (10.14 and above), under Swift 5.0 and above,  defining functions to efficiently compute permutations and combinations of given elements, as well as factorials and binomial coefficients. The functionality is provided by several static fuctions on an empty enumeraton, `Combinatorics`, and there are several variants of each API, depending on the type of result one wants (`UInt`, `Double`, `Result<UInt, Error>`, or `Result<UInt, Error>` for `factorial(of n:)` and `binomialCoefficient(n: k:)`, for instance) and on whether or not the computations are done in the background.
+**Combinatorics** is a Swift Package Manager package for iOS/tvOS (10.0 and above), watchOS (4.0 and above), and macOS (10.14 and above), under Swift 5.0 and above,  defining functions to efficiently compute permutations and combinations of given elements, as well as factorials and binomial coefficients.
 
-The variants of `factorial(of n:)` and `binomialCoefficient(n: k:)` with `UInt` return types can only compute their results for relatively small values of their inputs, but their results are *exact*. The `Double` variants allow for larger inputs and return values but do not provide exact results. The variants using Swift's `Result<Success, Failure>` type provide input validation and better handling of error conditions.
+The functionality is provided by several static fuctions on an empty enumeraton, `Combinatorics`, and there are several variants of each API, depending on the type of result one needs (`UInt`, `Double`, `Result<UInt, Error>`, or `Result<UInt, Error>` for `factorial(of n:)` and `binomialCoefficient(n: k:)`, for instance) and on whether or not the computations are done in the background (for `combinations` and `permutations`).
+
+The variants of `factorial(of n:)` and `binomialCoefficient(n: k:)` with `UInt` return types can only compute their results for relatively small values of their inputs, but their results are *exact*. The `Double` variants allow for larger inputs and return values but do not provide exact results. The variants using Swift's `Result<Success, Failure>` type provide input validation and better handling of error conditions. These are all synchronous since their computational cost is rather small, so there's not much point in having asynchronous variants for them.
+
+In contrast, generating `combinations` and `permutations` can be costly even for inputs that aren't particularly large. Therefore, asynchronous versions of these *are* provided but they all assume inputs that are within the limits of `UInt` storage so  no `Double` or `Result`-type variants are provided for them.
 
 Here's the full API:
 ```swift
 public enum Combinatorics {
     
+    // Factorials
+
     public enum FactorialError: Error {
         case inputTooLarge
     }
@@ -27,6 +33,8 @@ public enum Combinatorics {
     public static func factorial(of n: UInt) -> FactorialIntegerResult
     public static func factorial(of n: UInt) -> FactorialDoubleResult
     
+    // Binomial Coefficients
+
     public enum BinomialCoefficientError: Error {
         case invalidInput
         case inputTooLarge
@@ -39,19 +47,49 @@ public enum Combinatorics {
     public static func binomialCoefficient(n: UInt, k: UInt) -> Double 
     public static func binomialCoefficient(n: UInt, k: UInt) -> BinomialCoefficientIntegerResult 
     public static func binomialCoefficient(n: UInt, k: UInt) -> BinomialCoefficientDoubleResult 
+    
+    // Combinations
+    
+    public typealias CombinationsCompletionHandler<T> = ([[T]]) -> Void
 
-    /// All permutations of `elements`
+    // All combinations of `elements`, taken k at a time
+    
+    public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]] 
+    public static func combinations<T>(of elements: ArraySlice<T>, k: Int,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping CombinationsCompletionHandler<T>
+    )
+    
+    public static func combinations<T>(of elements: Array<T>, k: Int) -> [[T]] 
+    public static func combinations<T>(of elements: Array<T>, k: Int,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping CombinationsCompletionHandler<T>
+    ) 
+
+    // All combinations of `elements`, taken k at a time, for all possible values of k
+
+    public static func combinations<T>(of elements: ArraySlice<T>) -> [[T]] 
+    public static func combinations<T>(of elements: ArraySlice<T>,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping CombinationsCompletionHandler<T>
+    ) 
+
+    public static func combinations<T>(of elements: Array<T>) -> [[T]] 
+    public static func combinations<T>(of elements: Array<T>,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping CombinationsCompletionHandler<T>
+    )
+    
+    // Permutations
+    
+    // All permutations of `elements`
     public static func permutations<T>(of elements: ArraySlice<T>) -> [[T]]
     public static func permutations<T>(of elements: Array<T>) -> [[T]]
-    
-    /// All combinations of `elements`, taken k at a time
-    public static func combinations<T>(of elements: ArraySlice<T>, k: Int) -> [[T]]
-    public static func combinations<T>(of elements: Array<T>, k: Int) -> [[T]]
-    
-    /// All combinations of `elements`, taken k at a time, for all possible values of k
-    public static func combinations<T>(of elements: ArraySlice<T>) -> [[T]]
-    public static func combinations<T>(of elements: Array<T>) -> [[T]]
-    
+
 }
 ```
 
