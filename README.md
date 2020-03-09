@@ -85,10 +85,24 @@ public enum Combinatorics {
     )
     
     // Permutations
+
+    public typealias PermutationsCompletionHandler<T> = ([[T]]) -> Void
     
     // All permutations of `elements`
-    public static func permutations<T>(of elements: ArraySlice<T>) -> [[T]]
-    public static func permutations<T>(of elements: Array<T>) -> [[T]]
+    
+    public static func permutations<T>(of elements: ArraySlice<T>) -> [[T]] 
+    public static func permutations<T>(of elements: ArraySlice<T>,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping PermutationsCompletionHandler<T>
+    ) 
+
+    public static func permutations<T>(of elements: Array<T>) -> [[T]] 
+    public static func permutations<T>(of elements: Array<T>,
+        executionQueue: DispatchQueue,
+        receiverQueue: DispatchQueue,
+        completion: @escaping PermutationsCompletionHandler<T>
+    ) 
 
 }
 ```
