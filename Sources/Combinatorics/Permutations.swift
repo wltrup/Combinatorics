@@ -53,22 +53,6 @@ extension Combinatorics {
 
     }
 
-    public static func permutations_old<T>(of elements: ArraySlice<T>) -> [[T]] {
-        var res: [[T]] = []
-        elements.enumerated().forEach { k, entry in
-            let prefix = elements.prefix(upTo: k)
-            let suffix = elements.suffix(from: k+1)
-            let slice = prefix + suffix
-            if slice.isEmpty == false {
-                let subPerms = permutations(of: slice)
-                res += subPerms.map { [entry] + $0 }
-            } else {
-                res += [[entry]]
-            }
-        }
-        return res
-    }
-
     /// Computes all *permutations* of the input elements, using
     /// [Heap's algorithm](https://en.wikipedia.org/wiki/Heap%27s_algorithm).
     /// The result is, naturally, an array of length-`n` arrays, where `n` is

@@ -83,29 +83,4 @@ final class PermutationsTests: XCTestCase {
         }
     }
 
-    func test_perf() {
-        var start: Date
-        var end: Date
-        for n in 1 ... 10 {
-            let input = ArraySlice([Int](1 ... n))
-            start = Date()
-            _ = Combinatorics.permutations_old(of: input)
-            end = Date()
-            let oldDelta = end.timeIntervalSince(start)
-            start = Date()
-            _ = Combinatorics.permutations(of: input)
-            end = Date()
-            let newDelta = end.timeIntervalSince(start)
-            print("-----")
-            print("n = \(n)")
-            print("old = \(oldDelta)")
-            print("new = \(newDelta)")
-            let r = Double(Int(1000 * (oldDelta / newDelta))) / 1000
-            print("old is \(r) times slower than new")
-            let s = Double(Int(100000 * (oldDelta - newDelta) / newDelta)) / 1000
-            print("old is \(s) % slower than new")
-        }
-        print("-----")
-    }
-
 }
