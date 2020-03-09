@@ -15,6 +15,8 @@ The variants of `factorial(of n:)` and `binomialCoefficient(n: k:)` with `UInt` 
 
 In contrast, generating `combinations` and `permutations` can be costly even for inputs that aren't particularly large. Therefore, asynchronous versions of these *are* provided but they all assume inputs that are within the limits of `UInt` storage so  no `Double` or `Result`-type variants are provided for them.
 
+Test coverage is currently at 99.4%.
+
 Here's the full API:
 ```swift
 public enum Combinatorics {
