@@ -20,6 +20,7 @@ Permutations are computed using [Heap's algorithm](https://en.wikipedia.org/wiki
 Test coverage is currently at 99.4%.
 
 Here's the full API:
+
 ```swift
 public enum Combinatorics {
     
@@ -114,10 +115,6 @@ public enum Combinatorics {
 ## Installation
 
 **Combinatorics** is provided only as a Swift Package Manager package, because I'm moving away from CocoaPods and Carthage, and can be easily installed directly from Xcode.
-
-## Author
-
-Wagner Truppel, trupwl@gmail.com
 
 ## License
 
